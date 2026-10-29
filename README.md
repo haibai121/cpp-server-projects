@@ -1,7 +1,31 @@
-# C++ 后端开发实战（2026 暑期实习准备）
+# cpp-server-projects
 
-- Week1: 算术系统、游戏服务器原型
-- Week2: 学生管理、图书系统、单词计数器
-- 技术栈：C++17, CMake, Linux, Git
+C++ server-side projects, built while learning Linux network programming.
 
-> 用于应聘 C++ 后端岗位
+## Projects
+
+### [epoll-chat-room](epoll-chat-room)
+
+A multiplayer chat server for local networks, built with Linux epoll and a custom binary protocol.
+
+- Non-blocking sockets and an epoll-based Reactor event loop
+- 12-byte fixed header + variable-length body to handle TCP framing
+- Registration, login, group chat, online user list, heartbeat (in progress)
+- Main-sub Reactor and I/O thread pool (planned)
+
+Status: under development. See [epoll-chat-room/README.md](epoll-chat-room/README.md).
+
+## Tech stack
+
+C++17 · CMake · Linux (epoll) · TCP · Git
+
+## Repository layout
+
+```
+.
+├── epoll-chat-room/    # first project
+├── README.md
+└── .gitignore
+```
+
+Older practice projects are preserved on the `archive/old-practice` branch.
