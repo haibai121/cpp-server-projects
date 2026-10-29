@@ -63,7 +63,7 @@ bool HttpRequestParser::parse(const std::string raw_request){
     std::istringstream header_stream(header_section);
     std::string request_line;
     if (!std::getline(header_stream, request_line)) return false;
-    
+    //这里就是判断请求格式是为POST还是GET，目前只能判断GET
     std::istringstream line_stream(request_line);
     if(!(line_stream >> m_methon >> m_uri >> std::ws)) return false;
 
@@ -147,7 +147,6 @@ void Connection::close(){
         ::close(fd);
         fd = -1;
     }
-
 }
 
 Server::Server(const int port, const std::string& root_dir) : m_port(port), m_root_dir(root_dir){

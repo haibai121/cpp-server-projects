@@ -1,0 +1,49 @@
+# 1. 设置 CMake 最低版本要求
+cmake_minimum_required(VERSION 3.10)
+
+# 2. 定义项目名称和版本
+project(MyHttpServer VERSION 2.0 LANGUAGES CXX)
+
+# 3. 设置 C++ 标准 (推荐 C++14 或 C++17)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# ============================================================
+# 核心配置：设置头文件搜索路径
+# ============================================================
+# 这句话的意思是：把当前项目根目录下的 "include" 文件夹加入搜索路径
+# 这样你在 .cpp 里写 #include "http_server.hpp" 就能直接找到了
+# 注意：这里使用的是 target_include_directories 而不是全局的 include_directories，更现代、更安全
+# ============================================================
+
+# 4. 定义动态库 (Shared Library)
+# 名字是 httpserver (生成 libhttpserver.so)
+# 源文件是 src/http_server.cpp
+add_library(httpserver SHARED src/http_server.cpp)
+
+# 5. 告诉编译器去哪里找头文件 (针对 httpserver 这个库)
+# PUBLIC 表示：不仅编译这个库的时候用这个路径，别人链接这个库的时候也会自动继承这个路径
+target_include_directories(httpserver PUBLIC ${CMAKE_SOURCE_DIR}/include)
+
+# 6. 设置导出宏定义
+# 这对应你头文件里的 #ifdef HTTP_SERVER_EXPORTS
+# 只有编译库的时候才定义这个，使用库的时候不定义（这样才能正确导出/导入）
+target_compile_definitions(httpserver PRIVATE HTTP_SERVER_EXPORTS)
+
+# ============================================================
+# 可选：编译一个测试程序 (main.cpp)
+# ============================================================
+add_executable(app_test src/main.cpp)
+
+# 让测试程序链接你的动态库
+target_link_libraries(app_test PRIVATE httpserver)
+
+# ============================================================
+# 设置输出目录 (让生成的 .so 和 可执行文件 跑到 bin/ 目录下)
+# ============================================================
+set_target_properties(httpserver PROPERTIES
+    LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
+)
+set_target_properties(app_test PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
+)
