@@ -32,3 +32,13 @@ target_include_directories(chat_server PRIVATE
 )
 
 target_compile_definitions(chat_server PRIVATE _GNU_SOURCE)
+
+enable_testing()
+
+add_executable(packet_parser_test
+  tests/test_packet_parser.cpp
+  src/protocol/PacketParser.cpp
+  src/protocol/PacketCodec.cpp)
+
+target_include_directories(packet_parser_test PRIVATE include src)
+add_test(NAME packet_parser_test COMMAND packet_parser_test)

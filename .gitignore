@@ -29,3 +29,5 @@ Thumbs.db
 # =============== 其他临时文件 ===============
 *.log
 temp/
+# sanitizer build dirs
+build-*/
